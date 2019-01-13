@@ -3,10 +3,12 @@ package com.benoitlefevre.moodtracker.controller;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.widget.ListView;
 
 import com.benoitlefevre.moodtracker.R;
 import com.benoitlefevre.moodtracker.model.Mood;
+import com.benoitlefevre.moodtracker.model.MoodAdapter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -29,6 +31,9 @@ public class HistoricalActivity extends AppCompatActivity {
 
         initActivity();
         initMoods();
+        getHeightScreen();
+        MoodAdapter adapter = new MoodAdapter(this,mMoodList,mHeightScreen);
+        mListView.setAdapter(adapter);
     }
 
     public void initActivity(){
@@ -55,5 +60,15 @@ public class HistoricalActivity extends AppCompatActivity {
         if(mMoodList.size()>= 7) {
             mMoodList = mMoodList.subList(mMoodList.size()-7,mMoodList.size());
         }
+    }
+
+    public void getHeightScreen(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int heightScreen = displayMetrics.heightPixels;
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int heightScreen2 = displayMetrics.heightPixels;
+        int diff = (heightScreen - heightScreen2);
+        mHeightScreen = heightScreen2-diff;
     }
 }
