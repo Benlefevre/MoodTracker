@@ -6,9 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,6 +37,7 @@ public class MoodActivity extends AppCompatActivity {
     private Mood mCurrentMood;
     private Gson mGson;
     private String today;
+    private GestureDetectorCompat mDetector;
 
 
     @Override
@@ -72,6 +76,7 @@ public class MoodActivity extends AppCompatActivity {
         mGson = new Gson();
         SimpleDateFormat dateFormat = new SimpleDateFormat("E-w",Locale.getDefault());
         today = dateFormat.format(mDate);
+        mDetector = new GestureDetectorCompat(this,new MyGestureListener());
 
     }
 
@@ -125,6 +130,53 @@ public class MoodActivity extends AppCompatActivity {
     public void saveMood(){
         String json = mGson.toJson(mCurrentMood);
         mPreferences.edit().putString(today,json).apply();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        this.mDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            int delta = 250;
+            if(( e1.getY()<e2.getY() ) && (( e2.getY()-e1.getY() ) > delta)){
+                switch(mCurrentMood.getId()){
+                    case 0 :
+                        mCurrentMood = mMoods[1];
+                        break;
+                    case 1:
+                        mCurrentMood = mMoods[2];
+                        break;
+                    case 2:
+                        mCurrentMood = mMoods[3];
+                        break;
+                    case 3:
+                        mCurrentMood = mMoods[4];
+                        break;
+                }
+            }
+            if(( e1.getY()>e2.getY() ) && ( (e1.getY()-e2.getY() ) > delta)){
+                switch(mCurrentMood.getId()){
+                    case 4 :
+                        mCurrentMood = mMoods[3];
+                        break;
+                    case 3:
+                        mCurrentMood = mMoods[2];
+                        break;
+                    case 2:
+                        mCurrentMood = mMoods[1];
+                        break;
+                    case 1:
+                        mCurrentMood = mMoods[0];
+                        break;
+                }
+            }
+            changeMood();
+            return true;
+        }
     }
 
     @Override
