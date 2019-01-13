@@ -1,9 +1,11 @@
 package com.benoitlefevre.moodtracker.controller;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -30,6 +32,21 @@ public class MoodActivity extends AppCompatActivity {
 
         initActivity();
         mMoods = createMoods();
+
+        mCommentaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
+        mHistoricalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MoodActivity.this,HistoricalActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void initActivity(){
@@ -38,6 +55,7 @@ public class MoodActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.MoodActivity_smiley_img);
         mCommentaryButton = findViewById(R.id.MoodActivity_commentary_btn);
         mHistoricalButton = findViewById(R.id.MoodActivity_history_btn);
+        mDate = new Date();
     }
 
     public Mood[] createMoods(){
@@ -48,4 +66,6 @@ public class MoodActivity extends AppCompatActivity {
         Mood mSuperHappy = new Mood(4, R.drawable.smiley_super_happy,R.color.banana_yellow,null,mDate);
         return new Mood[]{mSad,mDisappointed,mSimple,mHappy,mSuperHappy};
     }
+
+
 }
