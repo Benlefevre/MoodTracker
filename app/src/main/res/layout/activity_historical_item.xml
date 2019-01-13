@@ -28,6 +28,7 @@
 
             <ImageButton
                 android:id="@+id/HistoricalActivity_comment_btn"
+                android:contentDescription="View commentary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"

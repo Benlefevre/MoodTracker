@@ -9,6 +9,7 @@
 
     <ImageView
         android:id="@+id/MoodActivity_smiley_img"
+        android:contentDescription="A big smiley"
         android:layout_width="316dp"
         android:layout_height="215dp"
         android:layout_marginStart="8dp"
@@ -22,6 +23,7 @@
 
     <ImageButton
         android:id="@+id/MoodActivity_commentary_btn"
+        android:contentDescription="Add a commentary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -33,6 +35,7 @@
 
     <ImageButton
         android:id="@+id/MoodActivity_history_btn"
+        android:contentDescription="Show historical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
