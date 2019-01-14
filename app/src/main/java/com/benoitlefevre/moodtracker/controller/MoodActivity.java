@@ -142,36 +142,17 @@ public class MoodActivity extends AppCompatActivity {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             int delta = 250;
+            int idMood = mCurrentMood.getId();
             if(( e1.getY()<e2.getY() ) && (( e2.getY()-e1.getY() ) > delta)){
-                switch(mCurrentMood.getId()){
-                    case 0 :
-                        mCurrentMood = mMoods[1];
-                        break;
-                    case 1:
-                        mCurrentMood = mMoods[2];
-                        break;
-                    case 2:
-                        mCurrentMood = mMoods[3];
-                        break;
-                    case 3:
-                        mCurrentMood = mMoods[4];
-                        break;
+                if((idMood <= 4) && (idMood > 0)){
+                    idMood--;
+                    mCurrentMood = mMoods[idMood];
                 }
             }
             if(( e1.getY()>e2.getY() ) && ( (e1.getY()-e2.getY() ) > delta)){
-                switch(mCurrentMood.getId()){
-                    case 4 :
-                        mCurrentMood = mMoods[3];
-                        break;
-                    case 3:
-                        mCurrentMood = mMoods[2];
-                        break;
-                    case 2:
-                        mCurrentMood = mMoods[1];
-                        break;
-                    case 1:
-                        mCurrentMood = mMoods[0];
-                        break;
+                if((idMood >= 0) && (idMood <4)){
+                    idMood++;
+                    mCurrentMood = mMoods[idMood];
                 }
             }
             changeMood();
