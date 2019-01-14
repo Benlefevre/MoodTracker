@@ -66,17 +66,17 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
 
         changeWeight(mCurrentMood,moodViewHolder.linearLayout2,moodViewHolder.linearLayout3,params2,params3);
 
-        displayComment(moodViewHolder,mCurrentMood);
+        displayComment(moodViewHolder.imageButton,mCurrentMood);
 
         changeText(mCurrentMood,moodViewHolder.date);
 
         return convertView;
     }
 
-    private void displayComment(final MoodViewHolder moodViewHolder, final Mood mood){
+    private void displayComment(ImageButton imageButton, final Mood mood){
         if(mood.getCommentary()!= null)
-            moodViewHolder.imageButton.setVisibility(View.VISIBLE);
-        moodViewHolder.imageButton.setOnClickListener(new View.OnClickListener() {
+            imageButton.setVisibility(View.VISIBLE);
+        imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, mood.getCommentary(), Toast.LENGTH_LONG).show();
