@@ -54,7 +54,15 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
         }
         final Mood mCurrentMood = mMoodList.get(position);
 
+        LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) moodViewHolder.linearLayout1.getLayoutParams();
+        LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) moodViewHolder.linearLayout2.getLayoutParams();
+        LinearLayout.LayoutParams params3 = (LinearLayout.LayoutParams) moodViewHolder.linearLayout3.getLayoutParams();
+
+        changeHeight(moodViewHolder.linearLayout1,params1);
+
         moodViewHolder.linearLayout2.setBackgroundResource(mCurrentMood.getColor());
+
+        changeWeight(mCurrentMood,moodViewHolder.linearLayout2,moodViewHolder.linearLayout3,params2,params3);
 
         displayComment(moodViewHolder,mCurrentMood);
 
@@ -70,5 +78,37 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
                 Toast.makeText(mContext, mood.getCommentary(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void changeHeight(View layout,LinearLayout.LayoutParams params){
+        params.height = mHeightScreen/7;
+        layout.setLayoutParams(params);
+    }
+
+    private void changeWeight(Mood mood, View layout, View layout2, LinearLayout.LayoutParams params, LinearLayout.LayoutParams params2){
+        switch (mood.getId()){
+            case 0:
+                params.weight = 0.2f;
+                params2.weight = 0.8f;
+                break;
+            case 1:
+                params.weight = 0.4f;
+                params2.weight = 0.6f;
+                break;
+            case 2:
+                params.weight = 0.6f;
+                params2.weight = 0.4f;
+                break;
+            case 3:
+                params.weight = 0.8f;
+                params2.weight = 0.2f;
+                break;
+            case 4:
+                params.weight = 1.0f;
+                params2.weight = 0.0f;
+                break;
+        }
+        layout.setLayoutParams(params);
+        layout2.setLayoutParams(params2);
     }
 }
