@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.benoitlefevre.moodtracker.R;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MoodAdapter extends ArrayAdapter<Mood> {
@@ -66,6 +68,8 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
 
         displayComment(moodViewHolder,mCurrentMood);
 
+        changeText(mCurrentMood,moodViewHolder.date);
+
         return convertView;
     }
 
@@ -110,5 +114,21 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
         }
         layout.setLayoutParams(params);
         layout2.setLayoutParams(params2);
+    }
+
+    private void changeText(Mood mood, TextView view){
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.setTime(new Date());
+        currentDate.set(Calendar.HOUR_OF_DAY,1);
+        Calendar moodDate = Calendar.getInstance();
+        moodDate.setTime(mood.getDay());
+        moodDate.set(Calendar.HOUR_OF_DAY,23);
+        String[] legends = {"Today","Yesterday","2 days ago","3 days ago","4 days ago","5 days ago","6 days ago","Last week"};
+        int i = 0;
+        while(currentDate.getTime().after(moodDate.getTime())) {
+            moodDate.add(Calendar.DATE, 1);
+            i++;
+        }
+        view.setText(legends[i]);
     }
 }
