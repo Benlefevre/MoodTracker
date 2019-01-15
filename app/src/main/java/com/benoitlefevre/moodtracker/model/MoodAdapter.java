@@ -123,12 +123,18 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
         Calendar moodDate = Calendar.getInstance();
         moodDate.setTime(mood.getDay());
         moodDate.set(Calendar.HOUR_OF_DAY,23);
-        String[] legends = {"Today","Yesterday","2 days ago","3 days ago","4 days ago","5 days ago","6 days ago","Last week"};
+        String[] legends = {"Today","Yesterday","Last week"};
         int i = 0;
         while(currentDate.getTime().after(moodDate.getTime())) {
             moodDate.add(Calendar.DATE, 1);
             i++;
         }
-        view.setText(legends[i]);
+        String legend = i + " days ago";
+        if(i >= 0 && i<=1)
+            view.setText(legends[i]);
+        else if(i == 3)
+            view.setText(legends[2]);
+        else
+            view.setText(legend);
     }
 }

@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class MoodActivity extends AppCompatActivity {
+public class MoodActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView mImageView;
     private ImageButton mCommentaryButton;
@@ -49,23 +49,32 @@ public class MoodActivity extends AppCompatActivity {
         mMoods = createMoods();
         initMood();
 
-        mCommentaryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createDialog();
-            }
-        });
+        mCommentaryButton.setTag(0);
+        mCommentaryButton.setOnClickListener(this);
 
-        mHistoricalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MoodActivity.this, HistoryActivity.class);
-                startActivity(intent);
-            }
-        });
+        mHistoricalButton.setTag(1);
+        mHistoricalButton.setOnClickListener(this);
 
     }
 
+    @Override
+    public void onClick(View v) {
+        int view = (int) v.getTag();
+        Intent intent;
+        switch (view){
+            case 0:
+                createDialog();
+                break;
+            case 1:
+                intent = new Intent(MoodActivity.this,HistoryActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    /**
+     *Initializes all the fields of the activity
+     */
     public void initActivity(){
         mPreferences = getSharedPreferences("MoodSave",MODE_PRIVATE);
         mLayout = findViewById(R.id.background);
@@ -80,6 +89,10 @@ public class MoodActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Generate 5 different Mood objects that are displayed when user swipes
+     * @return  An array containing the 5 moods
+     */
     public Mood[] createMoods(){
         Mood mSad = new Mood(0,R.drawable.smiley_sad,R.color.faded_red,null,mDate);
         Mood mDisappointed = new Mood(1, R.drawable.smiley_disappointed,R.color.warm_grey,null,mDate);
@@ -89,6 +102,18 @@ public class MoodActivity extends AppCompatActivity {
         return new Mood[]{mSad,mDisappointed,mSimple,mHappy,mSuperHappy};
     }
 
+    /**
+     * Modifies the background and the image according to the Mood object that is selected
+     */
+    public void changeMood(){
+        mLayout.setBackgroundResource(mCurrentMood.getColor());
+        mImageView.setImageResource(mCurrentMood.getImage());
+    }
+
+    /**
+     * Initializes the first Mood object that is displayed on screen and verifies if a mood with the same key is already
+     * save in SharedPreferences
+     */
     public void initMood(){
         String json = mPreferences.getString(today,null);
         if(json != null)
@@ -98,16 +123,17 @@ public class MoodActivity extends AppCompatActivity {
         changeMood();
     }
 
-    public void changeMood(){
-        mLayout.setBackgroundResource(mCurrentMood.getColor());
-        mImageView.setImageResource(mCurrentMood.getImage());
-    }
-
+    /**
+     * Creates an AlertDialog where the user can save a comment. The comment is put in the field mCommentary of the current Mood that
+     * is save in SharedPreferences.
+     */
     public void createDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(MoodActivity.this);
         LayoutInflater inflater = MoodActivity.this.getLayoutInflater();
+//        We inflate the specific layout to get an EditText in this AlertDialog.
         builder.setView(inflater.inflate(R.layout.alertcommentary,null));
         builder.setTitle("Comment");
+//        We recover the user insert in the EditText to save it in the Mood commentary.
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -127,17 +153,18 @@ public class MoodActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void saveMood(){
-        String json = mGson.toJson(mCurrentMood);
-        mPreferences.edit().putString(today,json).apply();
-    }
 
+//    We override onTouchEvent to pass all the gesture events to mDetector.
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         this.mDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
 
+    /**
+     * Inner class that sets in which order the mood object are displayed when
+     * user scroll on the screen. We call changeMood() to display changes.
+     */
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -159,6 +186,18 @@ public class MoodActivity extends AppCompatActivity {
             return true;
         }
     }
+
+    /**
+     * Serializes the selected Mood object with Gson and put the created Json string in
+     * SharedPreferences with the current date formatted in initActivity() for key.
+     * So with a dynamic key, we rewrite on the current date all day and from midnight a new key is used.
+     * The save history isn't limited in time.
+     */
+    public void saveMood(){
+        String json = mGson.toJson(mCurrentMood);
+        mPreferences.edit().putString(today,json).apply();
+    }
+
 
     @Override
     protected void onPause() {

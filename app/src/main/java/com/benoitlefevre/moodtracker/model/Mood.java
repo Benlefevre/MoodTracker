@@ -2,8 +2,6 @@ package com.benoitlefevre.moodtracker.model;
 
 import java.util.Date;
 
-
-
 public class Mood {
 
     private int mId;
