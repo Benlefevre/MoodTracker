@@ -9,6 +9,7 @@ import android.widget.ListView;
 import com.benoitlefevre.moodtracker.R;
 import com.benoitlefevre.moodtracker.model.Mood;
 import com.benoitlefevre.moodtracker.model.MoodAdapter;
+import com.benoitlefevre.moodtracker.model.ToolMood;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -30,38 +31,29 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         initActivity();
-        initMoods();
+
+//        We use ToolMood.initMoods() to initialize mMoodList because this tool sets the number of items displayed
+//        in this activity and in StatActivity. We can change easily the number of items displayed by changing just one constant variable.
+        mMoodList = ToolMood.initMoods(mPreferences);
+
         getHeightScreen();
         MoodAdapter adapter = new MoodAdapter(this,mMoodList,mHeightScreen);
         mListView.setAdapter(adapter);
     }
 
+    /**
+     * Initializes all the fields of the activity
+     */
     public void initActivity(){
         mListView = findViewById(R.id.HistoricalActivity_listView);
         mPreferences = getSharedPreferences("MoodSave",MODE_PRIVATE);
         mMoodList = new ArrayList<>();
     }
 
-    public void initMoods(){
-        Gson gson = new Gson();
-        Map<String, ?> prefList = mPreferences.getAll();
-        for (Map.Entry<String,?>  entry : prefList.entrySet()) {
-            String json = entry.getValue().toString();
-            Mood mMood = gson.fromJson(json,Mood.class);
-            mMoodList.add(mMood);
-        }
-        Collections.sort(mMoodList, new Comparator<Mood>() {
-            @Override
-            public int compare(Mood o1, Mood o2) {
-                return o1.getDay().compareTo(o2.getDay());
-            }
-        });
-        mMoodList.remove(mMoodList.size()-1);
-        if(mMoodList.size()>= 7) {
-            mMoodList = mMoodList.subList(mMoodList.size()-7,mMoodList.size());
-        }
-    }
-
+    /**
+     * Gets the screen size and does the difference between the RealMetrics and the Metrics.
+     * Sets mHeightScreen to the Metrics less the difference.
+     */
     public void getHeightScreen(){
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
