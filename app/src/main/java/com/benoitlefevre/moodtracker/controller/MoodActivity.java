@@ -31,6 +31,7 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView mImageView;
     private ImageButton mCommentaryButton;
     private ImageButton mHistoricalButton;
+    private ImageButton mShareButton;
     private ConstraintLayout mLayout;
     private SharedPreferences mPreferences;
     private Date mDate;
@@ -56,6 +57,9 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
 
         mHistoricalButton.setTag(1);
         mHistoricalButton.setOnClickListener(this);
+
+        mShareButton.setTag(2);
+        mShareButton.setOnClickListener(this);
 
     }
 
@@ -83,6 +87,7 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
         mImageView = findViewById(R.id.MoodActivity_smiley_img);
         mCommentaryButton = findViewById(R.id.MoodActivity_commentary_btn);
         mHistoricalButton = findViewById(R.id.MoodActivity_history_btn);
+        mShareButton = findViewById(R.id.MoodActivity_share_btn);
         mDate = new Date();
         mGson = new Gson();
         SimpleDateFormat dateFormat = new SimpleDateFormat("E-w",Locale.getDefault());
@@ -171,8 +176,10 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+//            We creates an int named delta to cancel all horizontal gestures.
             int delta = 250;
             int idMood = mCurrentMood.getId();
+//            Swipe from top to bottom
             if(( e1.getY()<e2.getY() ) && (( e2.getY()-e1.getY() ) > delta)){
                 if((idMood <= 4) && (idMood > 0)){
                     idMood--;
@@ -180,6 +187,7 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
                     playSound(mCurrentMood.getSound());
                 }
             }
+//            Swipe from bottom to top
             if(( e1.getY()>e2.getY() ) && ( (e1.getY()-e2.getY() ) > delta)){
                 if((idMood >= 0) && (idMood <4)){
                     idMood++;
