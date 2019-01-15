@@ -1,13 +1,18 @@
 package com.benoitlefevre.moodtracker.controller;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.benoitlefevre.moodtracker.R;
 import com.benoitlefevre.moodtracker.model.Mood;
 import com.benoitlefevre.moodtracker.model.ToolMood;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
@@ -34,15 +39,17 @@ public class StatActivity extends AppCompatActivity {
 
         getPercents();
         initPieEntry();
-
+        initPie();
     }
 
     /**
      * Initializes all fields of the activity
      */
     public void initActivity(){
-        mPreferences = getSharedPreferences("Moodsave",MODE_PRIVATE);
+        mPreferences = getSharedPreferences("MoodSave",MODE_PRIVATE);
         mMoodList = new ArrayList<>();
+        mPercent = new ArrayList<>();
+        mPieChart = findViewById(R.id.pieChart);
     }
 
     /**
@@ -93,5 +100,27 @@ public class StatActivity extends AppCompatActivity {
         if(mPercent.get(4).getValue() >0)
             mPercent.get(4).setLabel("Very Happy Mood");
     }
-    
+
+    /**
+     * Initializes the form, the description and the legend of pie chart and sets witch values are displayed
+     */
+    public void initPie(){
+        mPieChart.getDescription().setText("Mood division for last " + ToolMood.getNbItemsForStats(mMoodList) + " days");
+        mPieChart.getDescription().setTextSize(20.0f);
+        mPieChart.setDrawHoleEnabled(false);
+        mPieChart.setEntryLabelColor(Color.BLACK);
+        mPieChart.setUsePercentValues(true);
+        mPieChart.animateY(800, Easing.EaseInCirc);
+
+        Legend legend = mPieChart.getLegend();
+        legend.setEnabled(false);
+
+        PieDataSet set = new PieDataSet(mPercent,null);
+        set.setColors(new int[]{R.color.faded_red,R.color.warm_grey,R.color.cornflower_blue_65,R.color.light_sage,R.color.banana_yellow},this);
+
+        PieData data = new PieData(set);
+        data.setValueTextColor(Color.BLACK);
+        mPieChart.setData(data);
+        mPieChart.invalidate();
+    }
 }
