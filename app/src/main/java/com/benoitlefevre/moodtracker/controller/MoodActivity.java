@@ -36,6 +36,7 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton mCommentaryButton;
     private ImageButton mHistoricalButton;
     private ImageButton mShareButton;
+    private ImageButton mPieButton;
     private ConstraintLayout mLayout;
     private SharedPreferences mPreferences;
     private Date mDate;
@@ -66,6 +67,9 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
         mShareButton.setTag(2);
         mShareButton.setOnClickListener(this);
 
+        mPieButton.setTag(3);
+        mPieButton.setOnClickListener(this);
+
     }
 
     @Override
@@ -91,6 +95,10 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra(Intent.EXTRA_STREAM,uri);
                 startActivity(intent);
                 break;
+            case 3:
+                intent = new Intent(MoodActivity.this,StatActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -104,6 +112,7 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
         mCommentaryButton = findViewById(R.id.MoodActivity_commentary_btn);
         mHistoricalButton = findViewById(R.id.MoodActivity_history_btn);
         mShareButton = findViewById(R.id.MoodActivity_share_btn);
+        mPieButton = findViewById(R.id.MoodActivity_piechart_btn);
         mDate = new Date();
         mGson = new Gson();
         SimpleDateFormat dateFormat = new SimpleDateFormat("E-w",Locale.getDefault());
