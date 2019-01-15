@@ -43,7 +43,7 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if(convertView == null)
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.activity_historical_item,parent,false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.activity_history_item,parent,false);
 
         MoodViewHolder moodViewHolder = (MoodViewHolder)convertView.getTag();
         if(moodViewHolder == null){

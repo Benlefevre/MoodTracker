@@ -17,7 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class HistoricalActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity {
 
     private SharedPreferences mPreferences;
     private ListView mListView;
@@ -27,7 +27,7 @@ public class HistoricalActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_historical);
+        setContentView(R.layout.activity_history);
 
         initActivity();
         initMoods();

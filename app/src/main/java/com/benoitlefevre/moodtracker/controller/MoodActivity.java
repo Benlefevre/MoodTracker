@@ -59,7 +59,7 @@ public class MoodActivity extends AppCompatActivity {
         mHistoricalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MoodActivity.this,HistoricalActivity.class);
+                Intent intent = new Intent(MoodActivity.this, HistoryActivity.class);
                 startActivity(intent);
             }
         });
