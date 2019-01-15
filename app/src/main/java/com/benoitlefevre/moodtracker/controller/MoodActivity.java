@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
     private Gson mGson;
     private String today;
     private GestureDetectorCompat mDetector;
+    private MediaPlayer mPlayer;
 
 
     @Override
@@ -86,6 +88,7 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
         SimpleDateFormat dateFormat = new SimpleDateFormat("E-w",Locale.getDefault());
         today = dateFormat.format(mDate);
         mDetector = new GestureDetectorCompat(this,new MyGestureListener());
+        mPlayer = null;
 
     }
 
@@ -94,11 +97,11 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
      * @return  An array containing the 5 moods
      */
     public Mood[] createMoods(){
-        Mood mSad = new Mood(0,R.drawable.smiley_sad,R.color.faded_red,null,mDate);
-        Mood mDisappointed = new Mood(1, R.drawable.smiley_disappointed,R.color.warm_grey,null,mDate);
-        Mood mSimple = new Mood(2,R.drawable.smiley_normal,R.color.cornflower_blue_65,null,mDate);
-        Mood mHappy = new Mood(3,R.drawable.smiley_happy,R.color.light_sage,null,mDate);
-        Mood mSuperHappy = new Mood(4, R.drawable.smiley_super_happy,R.color.banana_yellow,null,mDate);
+        Mood mSad = new Mood(0,R.drawable.smiley_sad,R.color.faded_red,R.raw.e1,null,mDate);
+        Mood mDisappointed = new Mood(1, R.drawable.smiley_disappointed,R.color.warm_grey,R.raw.g1,null,mDate);
+        Mood mSimple = new Mood(2,R.drawable.smiley_normal,R.color.cornflower_blue_65,R.raw.d1,null,mDate);
+        Mood mHappy = new Mood(3,R.drawable.smiley_happy,R.color.light_sage,R.raw.b1,null,mDate);
+        Mood mSuperHappy = new Mood(4, R.drawable.smiley_super_happy,R.color.banana_yellow,R.raw.a1,null,mDate);
         return new Mood[]{mSad,mDisappointed,mSimple,mHappy,mSuperHappy};
     }
 
@@ -174,12 +177,14 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
                 if((idMood <= 4) && (idMood > 0)){
                     idMood--;
                     mCurrentMood = mMoods[idMood];
+                    playSound(mCurrentMood.getSound());
                 }
             }
             if(( e1.getY()>e2.getY() ) && ( (e1.getY()-e2.getY() ) > delta)){
                 if((idMood >= 0) && (idMood <4)){
                     idMood++;
                     mCurrentMood = mMoods[idMood];
+                    playSound(mCurrentMood.getSound());
                 }
             }
             changeMood();
@@ -196,6 +201,19 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
     public void saveMood(){
         String json = mGson.toJson(mCurrentMood);
         mPreferences.edit().putString(today,json).apply();
+    }
+
+    /**
+     * Plays a sound after verify if the mPlayer is already created.
+     * @param sound is the sound that we want play
+     */
+    public void playSound(int sound){
+        if(mPlayer != null){
+            mPlayer.stop();
+            mPlayer.release();
+        }
+        mPlayer = MediaPlayer.create(this,sound);
+        mPlayer.start();
     }
 
 
