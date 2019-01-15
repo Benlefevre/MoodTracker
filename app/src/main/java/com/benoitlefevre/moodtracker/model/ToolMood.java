@@ -37,6 +37,7 @@ public class ToolMood {
                 return o1.getDay().compareTo(o2.getDay());
             }
         });
+//        We can always remove the last index of the moodList because there is always the current mood that is saved is MoodActivity onPause().
         moodList.remove(moodList.size()-1);
         if(moodList.size()>= NUMBEROFITEMS){
             moodList = moodList.subList(moodList.size()-NUMBEROFITEMS,moodList.size());

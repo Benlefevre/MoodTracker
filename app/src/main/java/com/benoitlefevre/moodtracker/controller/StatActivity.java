@@ -105,16 +105,21 @@ public class StatActivity extends AppCompatActivity {
      * Initializes the form, the description and the legend of pie chart and sets witch values are displayed
      */
     public void initPie(){
+//        We set the good description with the number of items displayed
         mPieChart.getDescription().setText("Mood division for last " + ToolMood.getNbItemsForStats(mMoodList) + " days");
         mPieChart.getDescription().setTextSize(20.0f);
+//        We set an entire PieChart without center hole.
         mPieChart.setDrawHoleEnabled(false);
         mPieChart.setEntryLabelColor(Color.BLACK);
+//        We convert float data values to percent.
         mPieChart.setUsePercentValues(true);
+//        We animate the open of StatActivity
         mPieChart.animateY(800, Easing.EaseInCirc);
 
         Legend legend = mPieChart.getLegend();
         legend.setEnabled(false);
 
+//        We set the data that displayed in PieChart
         PieDataSet set = new PieDataSet(mPercent,null);
         set.setColors(new int[]{R.color.faded_red,R.color.warm_grey,R.color.cornflower_blue_65,R.color.light_sage,R.color.banana_yellow},this);
 
