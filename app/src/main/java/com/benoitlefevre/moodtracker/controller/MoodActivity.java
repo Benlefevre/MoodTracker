@@ -2,10 +2,14 @@ package com.benoitlefevre.moodtracker.controller;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +56,7 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
         mMoods = createMoods();
         initMood();
 
+//        We set a Tag for each ImageButton for recover them in OnClick() and to set the correct instructions.
         mCommentaryButton.setTag(0);
         mCommentaryButton.setOnClickListener(this);
 
@@ -65,6 +70,8 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+//        We get the Tag of the View and we put it in an int named view. According to the view's value, a new intent
+//        is created or we call createdDialog()
         int view = (int) v.getTag();
         Intent intent;
         switch (view){
@@ -73,6 +80,15 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 1:
                 intent = new Intent(MoodActivity.this,HistoryActivity.class);
+                startActivity(intent);
+                break;
+            case 2:
+                intent = new Intent(Intent.ACTION_SEND);
+//        We use getUriMoodImage to parse the int Image ID to an Uri that we need to use startActivity() with Intent.ACTION_SEND
+                Uri uri=getUriMoodImage(MoodActivity.this,mCurrentMood.getImage());
+                intent.setType("image/png");
+                intent.putExtra(Intent.EXTRA_TEXT,mCurrentMood.getCommentary());
+                intent.putExtra(Intent.EXTRA_STREAM,uri);
                 startActivity(intent);
                 break;
         }
@@ -222,6 +238,19 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
         }
         mPlayer = MediaPlayer.create(this,sound);
         mPlayer.start();
+    }
+
+    /**
+     * Creates an Uri from an int drawable ID
+     * @param context The actual context to search the resources
+     * @param moodImage The drawable ID gets by Mood.getImage
+     * @return Uri of the Mood Image that we use to send into an intent
+     */
+    public Uri getUriMoodImage(@NonNull Context context, int moodImage) {
+        return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                "://" + context.getResources().getResourcePackageName(moodImage)
+                + '/' + context.getResources().getResourceTypeName(moodImage)
+                + '/' + context.getResources().getResourceEntryName(moodImage) );
     }
 
 
