@@ -52,7 +52,7 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
         MoodViewHolder moodViewHolder = (MoodViewHolder)convertView.getTag();
         if(moodViewHolder == null){
             moodViewHolder = new MoodViewHolder();
-            moodViewHolder.date=convertView.findViewById(R.id.HistoricalActivity_textView);
+            moodViewHolder.date = convertView.findViewById(R.id.HistoricalActivity_textView);
             moodViewHolder.imageButton = convertView.findViewById(R.id.HistoricalActivity_comment_btn);
             moodViewHolder.linearLayout1 = convertView.findViewById(R.id.HistoricalActivity_Mood_layout1);
             moodViewHolder.linearLayout2 = convertView.findViewById(R.id.HistoricalActivity_Mood_layout2);

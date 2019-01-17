@@ -152,7 +152,7 @@ public class MoodActivity extends AppCompatActivity implements View.OnClickListe
         if(json != null)
             mCurrentMood = mGson.fromJson(json,Mood.class);
         else
-            mCurrentMood = mMoods[2];
+            mCurrentMood = mMoods[3];
         changeMood();
     }
 
