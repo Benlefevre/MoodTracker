@@ -14,6 +14,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +122,8 @@ public class StatActivity extends AppCompatActivity {
 
 //        We set the data that displayed in PieChart
         PieDataSet set = new PieDataSet(mPercent,null);
+        set.setValueTextSize(10f);
+        set.setValueFormatter(new PercentFormatter());
         set.setColors(new int[]{R.color.faded_red,R.color.warm_grey,R.color.cornflower_blue_65,R.color.light_sage,R.color.banana_yellow},this);
 
         PieData data = new PieData(set);

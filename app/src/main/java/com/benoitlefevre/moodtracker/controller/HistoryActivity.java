@@ -60,7 +60,7 @@ public class HistoryActivity extends AppCompatActivity {
         int heightScreen = displayMetrics.heightPixels;
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int heightScreen2 = displayMetrics.heightPixels;
-        int diff = (heightScreen - heightScreen2);
+        int diff = (heightScreen - heightScreen2)/2;
         mHeightScreen = heightScreen2-diff;
     }
 }
