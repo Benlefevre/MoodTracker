@@ -1,8 +1,8 @@
 package com.benoitlefevre.moodtracker.controller;
 
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.widget.ListView;
 
@@ -10,13 +10,9 @@ import com.benoitlefevre.moodtracker.R;
 import com.benoitlefevre.moodtracker.model.Mood;
 import com.benoitlefevre.moodtracker.model.MoodAdapter;
 import com.benoitlefevre.moodtracker.model.ToolMood;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -35,8 +31,9 @@ public class HistoryActivity extends AppCompatActivity {
 //        We use ToolMood.initMoods() to initialize mMoodList because this tool sets the number of items displayed
 //        in this activity and in StatActivity. We can change easily the number of items displayed by changing just one constant variable.
         mMoodList = ToolMood.initMoods(mPreferences);
-
+//        We recover the screen's height to put it in the MoodAdapter constructor and to adapt the item's height in the ListView.
         getHeightScreen();
+//        We create a MoodAdapter to display in mListView the different Moods into mMoodList.
         MoodAdapter adapter = new MoodAdapter(this,mMoodList,mHeightScreen);
         mListView.setAdapter(adapter);
     }

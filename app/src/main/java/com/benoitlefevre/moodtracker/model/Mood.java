@@ -11,7 +11,15 @@ public class Mood {
     private Date mDay;
     private int mSound;
 
-
+    /**
+     * The Mood constructor
+     * @param id we need an id to identify easily each mood
+     * @param image a link to drawable resource
+     * @param color a link to color resource
+     * @param sound a link to a raw ressource
+     * @param commentary the comment which is attached to the Mood
+     * @param day the date of the creation of the Mood
+     */
     public Mood(int id, int image, int color, int sound, String commentary, Date day) {
         mId = id;
         mImage = image;
@@ -50,7 +58,7 @@ public class Mood {
     }
 
     /**
-     *A description of the Mood object with the values of each fields displayed.
+     *A description of the Mood object with the values of each fields.
      * @return The Mood description in String.
      */
     @Override

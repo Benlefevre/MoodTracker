@@ -37,9 +37,11 @@ public class StatActivity extends AppCompatActivity {
 //        We use ToolMood.initMoods() to initialize mMoodList because this tool sets the number of items displayed
 //        in this activity and in HistoryActivity. We can change easily the number of items displayed by changing just one constant variable.
         mMoodList = ToolMood.initMoods(mPreferences);
-
+//        We counts for its every mood the number present in history
         getPercents();
+//        We calculate a percentage for each mood
         initPieEntry();
+//        We create the pie chart
         initPie();
     }
 
@@ -117,6 +119,7 @@ public class StatActivity extends AppCompatActivity {
 //        We animate the open of StatActivity
         mPieChart.animateY(800, Easing.EaseInCirc);
 
+//        We disable the piechart's legend
         Legend legend = mPieChart.getLegend();
         legend.setEnabled(false);
 
