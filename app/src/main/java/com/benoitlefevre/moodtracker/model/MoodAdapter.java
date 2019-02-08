@@ -87,6 +87,7 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
      * @param mood The mood on which we want get the commentary
      */
     private void displayComment(ImageButton imageButton, final Mood mood){
+        imageButton.setVisibility(View.INVISIBLE);
         if(mood.getCommentary()!= null)
             imageButton.setVisibility(View.VISIBLE);
         imageButton.setOnClickListener(new View.OnClickListener() {
